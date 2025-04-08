@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  n8n:
+    build:
+      context: .
+    image: n8n-custom
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=adminpassword
+      - NODE_FUNCTION_ALLOW_EXTERNAL=cheerio
+      - N8N_HOST=automation.fleetsgo.com
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_TUNNEL_URL=https://automation.fleetsgo.com
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_HIDE_SETUP_PAGE=true
+    volumes:
+      - /home/guillermo_carames/n8n/n8n_data:/home/node/.n8n
+    restart: always
