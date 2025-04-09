@@ -6,19 +6,19 @@ services:
       context: .
     image: n8n-custom
     ports:
-      - "5678:5678"
+      - "${N8N_PORT:-5678}:5678"
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=adminpassword
-      - NODE_FUNCTION_ALLOW_EXTERNAL=cheerio
-      - N8N_HOST=automation.fleetsgo.com
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - WEBHOOK_TUNNEL_URL=https://automation.fleetsgo.com
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_HIDE_SETUP_PAGE=true
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE:-true}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-adminpassword}
+      - NODE_FUNCTION_ALLOW_EXTERNAL=${NODE_FUNCTION_ALLOW_EXTERNAL:-cheerio}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=${N8N_PORT:-5678}
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - WEBHOOK_TUNNEL_URL=${WEBHOOK_TUNNEL_URL:-http://localhost:5678}
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=${N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS:-true}
+      - N8N_RUNNERS_ENABLED=${N8N_RUNNERS_ENABLED:-true}
+      - N8N_HIDE_SETUP_PAGE=${N8N_HIDE_SETUP_PAGE:-true}
     volumes:
-      - /home/guillermo_carames/n8n/n8n_data:/home/node/.n8n
+      - ${N8N_VOLUME_PATH:-./n8n_data}:/home/node/.n8n
     restart: always
