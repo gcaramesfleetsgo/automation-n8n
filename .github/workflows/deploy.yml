@@ -35,8 +35,19 @@ jobs:
 
             # Configurar Git para usar HTTPS en lugar de SSH
             cd ~/n8n
-            git config --global url."https://github.com/".insteadOf git@github.com:
+
+            # Hacer backup de la base de datos
+            echo "💾 Haciendo backup de la base de datos..."
+            cp n8n_data/database.sqlite n8n_data/database.sqlite.backup
+
+            # Reset cambios locales
+            git reset --hard
+            git clean -fd
             git pull https://github.com/gcaramesfleetsgo/automation-n8n.git main
+
+            # Restaurar base de datos
+            echo "💾 Restaurando base de datos..."
+            mv n8n_data/database.sqlite.backup n8n_data/database.sqlite
 
             echo "🔐 Exportando variables de entorno..."
             export N8N_PORT="$N8N_PORT"
@@ -61,6 +72,7 @@ jobs:
             fi
 
             # Ejecutar comandos de docker-compose
+            docker-compose build n8n
             docker-compose pull
             docker-compose down
             docker-compose up -d
