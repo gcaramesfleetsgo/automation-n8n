@@ -33,8 +33,10 @@ jobs:
           script: |
             echo "📦 Desplegando en la VM..."
 
+            # Configurar Git para usar HTTPS en lugar de SSH
             cd ~/n8n
-            git pull origin main
+            git config --global url."https://github.com/".insteadOf git@github.com:
+            git pull https://github.com/gcaramesfleetsgo/automation-n8n.git main
 
             echo "🔐 Exportando variables de entorno..."
             export N8N_PORT="$N8N_PORT"
@@ -50,7 +52,15 @@ jobs:
             export N8N_HIDE_SETUP_PAGE="$N8N_HIDE_SETUP_PAGE"
             export N8N_VOLUME_PATH="$N8N_VOLUME_PATH"
 
-            echo "🚀 Ejecutando docker compose..."
-            docker compose pull
-            docker compose down
-            docker compose up -d
+            echo "🚀 Ejecutando docker-compose..."
+            # Asegurarse de que docker-compose está instalado
+            if ! command -v docker-compose &> /dev/null; then
+              echo "Instalando docker-compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            fi
+
+            # Ejecutar comandos de docker-compose
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
