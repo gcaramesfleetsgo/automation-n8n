@@ -56,7 +56,7 @@ jobs:
             fi
 
             echo "🔐 Generando archivo .env..."
-            cat << 'EOL' > .env
+            cat << EOL > .env
 N8N_PORT=${N8N_PORT}
 N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
 N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
